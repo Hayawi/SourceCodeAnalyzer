@@ -1,0 +1,7 @@
+application Results
+Total # of lines: 60
+Total # of comment lines: 28
+Total # of single line comments: 6
+Total # of comment lines within block comments: 22
+Total # of block lines comments: 2
+Total # of TODO's: 1

@@ -20,7 +20,7 @@ public class FileSystemTest {
 	public void testEmptyFileContents() {
 		String[] emptyFile = FileSystem.fileContents("testfiles\\empty.java");
 		assertNotNull(emptyFile);
-		assertEquals(emptyFile.length, 0);
+		assertEquals(0, emptyFile.length);
 	}
 
 	@Test
@@ -28,7 +28,7 @@ public class FileSystemTest {
 	public void testNonEmptyFileContents() {
 		String[] contents = FileSystem.fileContents("testfiles\\nonempty.java");
 		assertNotNull(contents);
-		assertEquals (contents.length, 5);
+		assertEquals (5, contents.length);
 		assertTrue( contents[0].equals("This") &&
 				contents[1].equals("Is") &&
 				contents[2].equals("A") &&
@@ -75,7 +75,7 @@ public class FileSystemTest {
 					e.printStackTrace();
 				}
 				String file = fileLocation.toLowerCase();
-		        robot.delay(500);
+		        robot.delay(1000);
 		        for (int i = 0; i < file.length(); i++){
 			        robot.delay(100);
 			        robot.keyPress(KeyEvent.getExtendedKeyCodeForChar(file.charAt(i)));

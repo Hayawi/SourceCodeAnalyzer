@@ -1,0 +1,7 @@
+time Results
+Total # of lines: 60
+Total # of comment lines: 19
+Total # of single line comments: 9
+Total # of comment lines within block comments: 10
+Total # of block lines comments: 3
+Total # of TODO's: 3
