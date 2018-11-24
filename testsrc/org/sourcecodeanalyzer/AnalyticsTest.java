@@ -80,7 +80,13 @@ public class AnalyticsTest {
 	
 	@Test
 	public void testTrailingTotalComments(){
-		int commentLines = Analytics.totalComments(new String[]{"hello", "is//hi", "//it", "me", "/* you're */", "looking", "//for"}, new String[]{"//", "/*", "*/"});
+		int commentLines = Analytics.totalComments(new String[]{"hello", "i's//hi", "//it", "me", "/* you're */", "looking", "//for"}, new String[]{"//", "/*", "*/"});
+		assertEquals(4, commentLines);
+	}
+	
+	@Test
+	public void testDoubleComments(){
+		int commentLines = Analytics.totalComments(new String[]{"hello", " \" // \"  //hi", "//it", "me", "/* you're */", "looking", "//for"}, new String[]{"//", "/*", "*/"});
 		assertEquals(4, commentLines);
 	}
 	
