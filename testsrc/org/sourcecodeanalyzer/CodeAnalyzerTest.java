@@ -1,4 +1,10 @@
-package me.yahyaismail.capitalone;
+ /*
+ * Source Code Analyzer is part of the larger Source Code Analyzer repository on https://github.com/Hayawi/SourceCodeAnalyzer
+ * Author: Yahya Ismail
+ * This project is under the MIT License so go wild
+ */
+
+package org.sourcecodeanalyzer;
 
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -6,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.junit.Test;
+import org.sourcecodeanalyzer.CodeAnalyzer;
 
 public class CodeAnalyzerTest {
 

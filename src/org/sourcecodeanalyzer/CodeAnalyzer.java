@@ -1,4 +1,13 @@
-package me.yahyaismail.capitalone;
+ /*
+ * Source Code Analyzer is part of the larger Source Code Analyzer repository on https://github.com/Hayawi/SourceCodeAnalyzer
+ * Author: Yahya Ismail
+ * This project is under the MIT License so go wild
+ * 
+ * CodeAnalyzer is the top level main class that aggregates all the helper classes and methods and outputs the results to console
+ * and to file
+ */
+
+package org.sourcecodeanalyzer;
 
 import java.io.BufferedWriter;
 import java.io.File;

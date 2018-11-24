@@ -1,4 +1,12 @@
-package me.yahyaismail.capitalone;
+ /*
+ * Source Code Analyzer is part of the larger Source Code Analyzer repository on https://github.com/Hayawi/SourceCodeAnalyzer
+ * Author: Yahya Ismail
+ * This project is under the MIT License so go wild
+ * 
+ * Analytics contains the methods that perform string analytics on the contents of the files to output data
+ */
+
+package org.sourcecodeanalyzer;
 
 public class Analytics {
 

@@ -1,4 +1,12 @@
-package me.yahyaismail.capitalone;
+ /*
+ * Source Code Analyzer is part of the larger Source Code Analyzer repository on https://github.com/Hayawi/SourceCodeAnalyzer
+ * Author: Yahya Ismail
+ * This project is under the MIT License so go wild
+ * 
+ * FileSystem contains necessary methods to allow for File manipulation and retrieval
+ */
+
+package org.sourcecodeanalyzer;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,4 +1,12 @@
-package me.yahyaismail.capitalone;
+ /*
+ * Source Code Analyzer is part of the larger Source Code Analyzer repository on https://github.com/Hayawi/SourceCodeAnalyzer
+ * Author: Yahya Ismail
+ * This project is under the MIT License so go wild
+ * 
+ * SourceComments is the enum class containing all supported languages and their details
+ */
+
+package org.sourcecodeanalyzer;
 
 public enum SourceComments {
 	//all the supported languages thus far
