@@ -80,7 +80,13 @@ public class AnalyticsTest {
 	
 	@Test
 	public void testTrailingTotalComments(){
-		int commentLines = Analytics.totalComments(new String[]{"hello", "is//hi", "//it", "me", "/* you're */", "looking", "//for"}, new String[]{"//", "/*", "*/"});
+		int commentLines = Analytics.totalComments(new String[]{"\" // \" //hello", "i's//hi", "//it", "me", "/* you're */", "looking", "//for"}, new String[]{"//", "/*", "*/"});
+		assertEquals(5, commentLines);
+	}
+	
+	@Test
+	public void testDoubleTotalComments(){
+		int commentLines = Analytics.totalComments(new String[]{"hello", " \" // \"  //hi", "//it", "me", "/* you're */", "looking", "//for"}, new String[]{"//", "/*", "*/"});
 		assertEquals(4, commentLines);
 	}
 	
@@ -117,7 +123,7 @@ public class AnalyticsTest {
 	
 	@Test
 	public void testTrailingTotalSingleComments(){
-		int commentLines = Analytics.totalSingleComments(new String[]{"hello", "/*yjjyjy", "it*/", "me//g", "j", "looking", "//for"}, new String[]{"//", "/*", "*/"});
+		int commentLines = Analytics.totalSingleComments(new String[]{"hello", "/*yjjyjy", "it*/", "me", "j//g", "g//", "for"}, new String[]{"//", "/*", "*/"});
 		assertEquals(2, commentLines);
 	}
 
@@ -152,8 +158,8 @@ public class AnalyticsTest {
 	
 	@Test
 	public void testTrailingTotalBlockComments(){
-		int[] commentLines = Analytics.totalBlockComments(new String[]{"hello", "/*yjjyjy", "it*/", "me//g", "j", "looking", "//for"}, new String[]{"//", "/*", "*/"});
-		assertEquals(2, commentLines[0]);
+		int[] commentLines = Analytics.totalBlockComments(new String[]{"//hello", "/*yjjyjy", "it*/", "me//g", "j", "looking", "//for"}, new String[]{"//", "/*", "*/"});
+		assertEquals(3, commentLines[0]);
 		assertEquals(1, commentLines[1]);
 	}
 	
