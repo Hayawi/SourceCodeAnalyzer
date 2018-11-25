@@ -90,10 +90,12 @@ public class Analytics {
 		
 		for (int i  = 0; i < contents.length; i++){
 			int activeCommentIndex = indexOfComment(contents[i], commentCharacter);
-			System.out.println(activeCommentIndex);
 			String stringContainingComment = "";
-			if (activeCommentIndex > -1)
+			if (activeCommentIndex > -1) {
 				stringContainingComment = contents[i].substring(activeCommentIndex);
+				if (!contents[i].substring(0, activeCommentIndex).trim().equals(""))
+					previousComment = false;
+			}
 			
 			if (!isBlock && activeCommentIndex > -1) {
 				if (stringContainingComment.contains(commentCharacter[0])) {
@@ -137,99 +139,72 @@ public class Analytics {
 	//TODO: Fix the trailing string bug
 	//return[0] is comment lines, return[1] is number of blocks
 	public static int[] totalBlockComments(String[] contents, String[] commentCharacter){
+		if (contents.length == 0 || commentCharacter.length == 0)
+			return new int[] {0,0};
 		int commentCount = 0;
 		int blockCount = 0;
 		boolean previousComment = false;
-		boolean previousIsFirstOfBlock = false;
-		boolean blockActive = false;
-		boolean blockJustEnded = false;
-		if (contents.length == 0 || commentCharacter.length == 0)
-			return new int[]{0,0};
-		for (int i = 0; i < contents.length; i++){
-			int indexOfFirst = contents[i].indexOf(commentCharacter[0]);
-			int indexOfSecond = -1;
-			int indexOfThird = -1;
-			if (commentCharacter.length > 1) {
-				indexOfSecond = contents[i].indexOf(commentCharacter[1]);
-				indexOfThird = contents[i].indexOf(commentCharacter[2]);
-			}
-			if (!blockActive){
-				if (indexOfFirst > -1 && indexOfSecond <= -1 && isComment(contents[i].substring(0, indexOfFirst)))
-				{
-					if (!previousComment) {
-						previousComment = true;
-						previousIsFirstOfBlock = true;
-					} else if (previousComment && previousIsFirstOfBlock && contents[i].substring(0, indexOfFirst).trim().isEmpty()){
-						commentCount++;
-						blockCount++;
-						previousIsFirstOfBlock = false;
-					} else if (previousComment && contents[i].substring(0, indexOfFirst).trim().isEmpty())
-						commentCount++;
-				} else if (indexOfFirst > -1 && indexOfSecond > -1){
-					if ((indexOfFirst < indexOfSecond && isComment(contents[i].substring(0, indexOfFirst))) || 
-						(indexOfFirst > indexOfSecond && !isComment(contents[i].substring(0, indexOfSecond)) && 
-						isComment(contents[i].substring(0, indexOfFirst)))){
-						if (!previousComment) {
-							previousComment = true;
-							previousIsFirstOfBlock = true;
-						} else if (previousComment && previousIsFirstOfBlock && contents[i].substring(0, indexOfFirst).trim().isEmpty()){
-							commentCount++;
-							blockCount++;
-							previousIsFirstOfBlock = false;
-						} else if (previousComment && contents[i].substring(0, indexOfFirst).trim().isEmpty())
-							commentCount++;
-					} else if (isComment(contents[i].substring(0, indexOfSecond))){
-						if (indexOfThird > -1 && indexOfThird > indexOfSecond){
-							if (!previousComment) {
-								previousComment = true;
-								previousIsFirstOfBlock = true;
-							} else if (previousComment && previousIsFirstOfBlock && contents[i].substring(0, indexOfSecond).trim().isEmpty()){
-								commentCount++;
-								blockCount++;
-								previousIsFirstOfBlock = false;
-							} else if (previousComment && contents[i].substring(0, indexOfSecond).trim().isEmpty())
-								commentCount++;
-						} else{
-							blockActive = true;
-							previousComment = true;
-							if (!previousIsFirstOfBlock)
-								previousIsFirstOfBlock = true;
-						}
-					}
-				} else if (indexOfSecond > -1 && isComment(contents[i].substring(0, indexOfSecond))){
-					if (indexOfThird > -1 && indexOfThird > indexOfSecond){
-						if (!previousComment) {
-							previousComment = true;
-							previousIsFirstOfBlock = true;
-						} else if (previousComment && previousIsFirstOfBlock && contents[i].substring(0, indexOfSecond).trim().isEmpty()){
-							commentCount++;
-							blockCount++;
-							previousIsFirstOfBlock = false;
-						} else if (previousComment && contents[i].substring(0, indexOfSecond).trim().isEmpty())
-							commentCount++;
-					} else {
-						blockActive = true;
-						previousComment = true;
-						if (!previousIsFirstOfBlock)
-							previousIsFirstOfBlock = true;
-					}
-				} else {
-					if (previousComment && !previousIsFirstOfBlock && !blockJustEnded)
-						commentCount++;
-					blockJustEnded=false;
+		boolean previousIsFirstComment = false;
+		boolean isBlock = false;
+		
+		for (int i  = 0; i < contents.length; i++){
+			int activeCommentIndex = indexOfComment(contents[i], commentCharacter);
+			String stringContainingComment = "";
+			if (activeCommentIndex > -1) {
+				stringContainingComment = contents[i].substring(activeCommentIndex);
+				if (!contents[i].substring(0, activeCommentIndex).trim().equals(""))
 					previousComment = false;
+			}
+			
+			if (!isBlock && activeCommentIndex > -1) {
+				if (stringContainingComment.contains(commentCharacter[0])) {
+					if (previousComment) {
+						commentCount++;
+						if (previousIsFirstComment)
+						{
+							blockCount++;
+							commentCount++;
+							previousIsFirstComment = false;
+						}
+					} else if (!previousIsFirstComment)
+						previousIsFirstComment = true;
+					previousComment = true;
+				} else if (stringContainingComment.contains(commentCharacter[1])) {
+					if (stringContainingComment.contains(commentCharacter[2])) {
+						if (previousComment) {
+							commentCount++;
+							if (previousIsFirstComment)
+							{
+								blockCount++;
+								commentCount++;
+								previousIsFirstComment = false;
+							}
+						} else if (!previousIsFirstComment)
+							previousIsFirstComment = true;
+						previousComment = true;
+					} else {
+						if (!previousComment || previousIsFirstComment) {
+							blockCount++;
+							if (previousIsFirstComment) {
+								previousIsFirstComment = false;
+								commentCount++;
+							}
+						}
+						commentCount++;
+						isBlock = true;
+						previousComment = true;
+					}
 				}
-			} else {
+			} else if (isBlock) {
 				commentCount++;
-				if (previousIsFirstOfBlock) {
-					blockCount++;
-					commentCount++;
-					previousIsFirstOfBlock = false;
-				}
-				if (indexOfThird > -1){
-					blockActive = false;
-					blockJustEnded = true;
-				}
+				if (contents[i].contains(commentCharacter[2])) 
+					isBlock = false;
+				if (!stringContainingComment.contains(commentCharacter[2]) && stringContainingComment.contains(commentCharacter[1]))
+					isBlock = true;
+				previousComment = true;
+			} else if (!isBlock) {
+				previousComment = false;
+				previousIsFirstComment = false;
 			}
 		}
 		return new int[]{commentCount,blockCount};
